@@ -1,0 +1,94 @@
+<script>
+
+
+    const treeherder = "https://treeherder.mozilla.org/jobs?repo=try&revision=";
+
+    function perfherder(entry, newEntry) {
+        const name = `${entry.name} vs ${newEntry.name}`
+        const url = `https://treeherder.mozilla.org/perfherder/compare?originalProject=try&originalRevision=${entry.sha}&newProject=try&newRevision=${newEntry.sha}`;
+        return {name, url}
+    }
+
+    const runs = [
+        {group: "Desktop", name: "Base", sha: "12d978ebebacc823350c3f524a2335453c16882a"},
+        {group: "Desktop", name: "PCN", sha: "bf5dc428432235b43a982436426918b4f5a4b979"},
+        {group: "Desktop", name: "PCN+Speculative", sha: "66a541e93772a1f8daae82855dde29ef2ee71d03"},
+        {group: "Profiling1ms", name: "Base 1ms", sha: "945cbf8408cf268a8f6df09e7a9f18189edfb790"},
+        {group: "Profiling1ms", name: "PCN 1ms", sha: "aba8fed9c4c887eba2acf5b73f37edc27da0965a"},
+        {group: "Profiling1ms", name: "PCN+Speculative 1ms", sha: "e244afefbb894a5b1666a94a02486605a1ebffd6"},
+        {group: "Profiling5ms", name: "Base 5ms", sha: "7122c19c28cc5bee7418acb0a2b003f696c4756e"},
+        {group: "Profiling5ms", name: "PCN 5ms", sha: "a80729149b2b821e1b2e873aa5f7c7e8b642367c"},
+        {group: "Profiling5ms", name: "PCN+Speculative 5ms", sha: "21914870db45f7438ab65a24060f660c85552113"},
+        {group: "Android", name: "Base", sha: "4f15f101d25445131da44d1979829aa4632eba35"},
+        {group: "Android", name: "PCN", sha: "275dfd85f8935a05cc167dd2f50c2eeb90b59bf2"},
+        {group: "Android", name: "PCN+Speculative", sha: "b3dc3867cd531293cd5d0606a1341e22516dcd60"},
+        {group: "AndroidProfile1ms", name: "Base 1ms", sha: "38f941ad5bc295df7952e7eda2cd4202c5701599"},
+        {group: "AndroidProfile1ms", name: "PCN 1ms", sha: "8737d4dcbb6859fe83a791ac8263366d8d18855b"},
+        {group: "AndroidProfile1ms", name: "PCN+Speculative 1ms", sha: "ae7d5a5acaf71fdc57e7e6d9fea454da614a014d"},
+    ];
+    const groups = ["Desktop", "Profiling1ms", "Profiling5ms", "Android"];
+    
+    function getLists() {
+        const lists = {
+            Desktop: document.createElement("ul"),
+            Profiling1ms: document.createElement("ul"),
+            Profiling5ms: document.createElement("ul"),
+            Android: document.createElement("ul"),
+            AndroidProfile1ms: document.createElement("ul"),
+        }
+        return lists;
+    }
+
+    function createItem(group, name, url) {
+        let anchor = document.createElement("a");
+        anchor.href = url;
+        anchor.innerText = name;
+        let item = document.createElement("li");
+        item.appendChild(anchor)
+        return item;
+    }
+
+    function initTreeherder() {
+        const lists = getLists();
+        for (let run of runs) {
+            const list = lists[run.group];
+            const item = createItem(run.group, `${run.group} ${run.name}`, `${treeherder}${run.sha}`);
+            list.appendChild(item);
+        }
+        let treeherderRuns = document.getElementById("treeherder")
+        for (let list of Object.values(lists)) {
+            treeherderRuns.appendChild(list);
+        }
+    }
+
+    function initPerfherder() {
+        const lists = getLists();
+        let perfherderRuns = document.getElementById("perfherder")
+
+        const groups = Object.groupBy(runs, ({ group }) => group);
+        for (const [group, entries] of Object.entries(groups)) {
+            while (entries.length > 0) {
+                const entry = entries.shift();
+                const list = lists[group];
+                for (const newEntry of entries) {
+                    let {name, url} = perfherder(entry, newEntry);
+                    const item = createItem(group, `${group} ${name}`, url);
+                    list.appendChild(item);
+                }
+            }
+        }
+        
+        for (let list of Object.values(lists)) {
+            perfherderRuns.appendChild(list);
+        }
+    }
+
+    function init() {
+        initTreeherder();
+        initPerfherder();
+    }
+    addEventListener("load", init);
+</script>
+<div id="treeherder"></div>
+<br>
+<div id="perfherder"></div>
