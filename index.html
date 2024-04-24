@@ -75,6 +75,7 @@
         compHelp.innerText = "Compare with...";
         comp.appendChild(compHelp);
 
+        let lastGroup;
         for (let run of runs) {
             const runName = `${run.group} ${run.name}`;
             if (runName == name) continue;
@@ -85,6 +86,11 @@
                 window.open(`https://treeherder.mozilla.org/perfherder/compare?originalProject=try&originalRevision=${run.sha}&newProject=try&newRevision=${sha}&framework=13&page=1&showOnlyImportant=1`, '_blank');
                 comp.selectedIndex = 0;
             };
+
+            if (lastGroup && lastGroup !== run.group) {
+                comp.appendChild(document.createElement("hr"));
+            }
+            lastGroup = run.group;
 
             comp.appendChild(opt);
         }
