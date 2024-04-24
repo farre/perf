@@ -83,7 +83,7 @@
             let opt = document.createElement("option");
             opt.innerText = runName;
             opt.onclick = () => {
-                window.open(`https://treeherder.mozilla.org/perfherder/compare?originalProject=try&originalRevision=${run.sha}&newProject=try&newRevision=${sha}&framework=13&page=1&showOnlyImportant=1`, '_blank');
+                window.open(`https://treeherder.mozilla.org/perfherder/compare?originalProject=try&originalRevision=${sha}&newProject=try&newRevision=${run.sha}&framework=13&page=1&showOnlyImportant=1`, '_blank');
                 comp.selectedIndex = 0;
             };
 
@@ -146,5 +146,5 @@
 <div id="perfherder"></div>
 
 <p>
-    When selecting a comparison, the profile in the dropdown will be the base with the list item as the new.
+    When selecting a comparison, the profile in the dropdown will be the new with the list item as the base.
 </p>
