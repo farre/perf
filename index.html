@@ -1,6 +1,25 @@
+<style>
+    * {
+        font-family: sans-serif;
+        font-size: 18px;
+    }
+
+    li {
+        width: 80vw;
+        max-width: 1000px;
+        margin-bottom: 8px;
+    }
+
+    select {
+        width: 20vw;
+        min-width: 200px;
+
+        float: right;
+        clear: right;
+    }
+</style>
+
 <script>
-
-
     const treeherder = "https://treeherder.mozilla.org/jobs?repo=try&revision=";
 
     function perfherder(entry, newEntry) {
@@ -27,7 +46,7 @@
         {group: "AndroidProfile1ms", name: "PCN+Speculative 1ms", sha: "ae7d5a5acaf71fdc57e7e6d9fea454da614a014d"},
     ];
     const groups = ["Desktop", "Profiling1ms", "Profiling5ms", "Android"];
-    
+
     function getLists() {
         const lists = {
             Desktop: document.createElement("ul"),
@@ -39,12 +58,39 @@
         return lists;
     }
 
-    function createItem(group, name, url) {
+    function createItem(group, name, sha, compareWith) {
+        const url = `${treeherder}${sha}`;
+
         let anchor = document.createElement("a");
         anchor.href = url;
         anchor.innerText = name;
         let item = document.createElement("li");
-        item.appendChild(anchor)
+        item.appendChild(anchor);
+
+        let comp = document.createElement("select");
+
+        let compHelp = document.createElement("option");
+        compHelp.selected = true;
+        compHelp.disabled = true;
+        compHelp.innerText = "Compare with...";
+        comp.appendChild(compHelp);
+
+        for (let run of runs) {
+            const runName = `${run.group} ${run.name}`;
+            if (runName == name) continue;
+
+            let opt = document.createElement("option");
+            opt.innerText = runName;
+            opt.onclick = () => {
+                window.open(`https://treeherder.mozilla.org/perfherder/compare?originalProject=try&originalRevision=${run.sha}&newProject=try&newRevision=${sha}&framework=13&page=1&showOnlyImportant=1`, '_blank');
+                comp.selectedIndex = 0;
+            };
+
+            comp.appendChild(opt);
+        }
+
+        item.appendChild(comp);
+
         return item;
     }
 
@@ -52,7 +98,7 @@
         const lists = getLists();
         for (let run of runs) {
             const list = lists[run.group];
-            const item = createItem(run.group, `${run.group} ${run.name}`, `${treeherder}${run.sha}`);
+            const item = createItem(run.group, `${run.group} ${run.name}`, run.sha);
             list.appendChild(item);
         }
         let treeherderRuns = document.getElementById("treeherder")
@@ -77,7 +123,7 @@
                 }
             }
         }
-        
+
         for (let list of Object.values(lists)) {
             perfherderRuns.appendChild(list);
         }
@@ -92,3 +138,7 @@
 <div id="treeherder"></div>
 <br>
 <div id="perfherder"></div>
+
+<p>
+    When selecting a comparison, the profile in the dropdown will be the base with the list item as the new.
+</p>
