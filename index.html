@@ -208,31 +208,8 @@
     }
   }
 
-  function initPerfherder() {
-    const lists = getLists();
-    let perfherderRuns = document.getElementById("perfherder");
-
-    const groups = Object.groupBy(runs, ({ group }) => group);
-    for (const [group, entries] of Object.entries(groups)) {
-      while (entries.length > 0) {
-        const entry = entries.shift();
-        const list = lists[group];
-        for (const newEntry of entries) {
-          let { name, url } = perfherder(entry, newEntry);
-          const item = createItem(group, `${group} ${name}`, url);
-          list.appendChild(item);
-        }
-      }
-    }
-
-    for (let list of Object.values(lists)) {
-      perfherderRuns.appendChild(list);
-    }
-  }
-
   function init() {
     initTreeherder();
-    // initPerfherder();
   }
   addEventListener("load", init);
 </script>
