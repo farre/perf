@@ -129,9 +129,20 @@
       name: "PCN+Speculative+Pred",
       sha: "213156434cd670d2ac976f322a76dae96b1171ce",
     },
+    {
+      group: "Browsertimex5",
+      name: "Base",
+      sha: "3776b401133b0b09ea45c1cf4789428845485dc4",
+    },
+    {
+      group: "Browsertimex5",
+      name: "PCN+Speculative",
+      sha: "2109afa4a60b96983b49a09c5f833ff589dd4a39",
+    },
   ];
   const groups = [
     "Desktop",
+    "Browsertimex5",
     "Profiling1ms",
     "Profiling5ms",
     "Android",
@@ -146,6 +157,7 @@
       Android: document.createElement("ul"),
       AndroidProfile1ms: document.createElement("ul"),
       DesktopStacklessProfile: document.createElement("ul"),
+      Browsertimex5: document.createElement("ul"),
     };
     return lists;
   }
