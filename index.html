@@ -139,6 +139,16 @@
       name: "PCN+Speculative",
       sha: "2109afa4a60b96983b49a09c5f833ff589dd4a39",
     },
+    {
+      group: "SocketThread",
+      name: "Base",
+      sha: "327cf9ae8c8526f8f30f5cbd764306a883c64c40",
+    },
+    {
+      group: "SocketThread",
+      name: "PCN+Speculative",
+      sha: "2a9129fd28a9ed7ce80e6b3607ef6c1e7e0924b8",
+    }
   ];
   const groups = [
     "Desktop",
@@ -147,6 +157,7 @@
     "Profiling5ms",
     "Android",
     "DesktopStacklessProfile",
+    "SocketThread"
   ];
 
   function getLists() {
@@ -158,6 +169,7 @@
       AndroidProfile1ms: document.createElement("ul"),
       DesktopStacklessProfile: document.createElement("ul"),
       Browsertimex5: document.createElement("ul"),
+      SocketThread: document.createElement("ul"),
     };
     return lists;
   }
