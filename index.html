@@ -6,7 +6,7 @@
 
   li {
     width: 80vw;
-    max-width: 1000px;
+    max-width: auto;
     margin-bottom: 8px;
   }
 
@@ -29,10 +29,57 @@
   }
 
   const runs = {
-      Desktop: [
-        { name: "Base", sha: "12d978ebebacc823350c3f524a2335453c16882a" },
-        { name: "PCN", sha: "bf5dc428432235b43a982436426918b4f5a4b979" },
-        { name: "PCN+Speculative", sha: "66a541e93772a1f8daae82855dde29ef2ee71d03" }
+      LinuxDesktop: [
+        { name: "Base", sha: "fc14bfcadc85888588931156fe39a266004258f1" },
+        { name: "PCN", sha: "c54f3032807e893fb62c4d3aa9ca45d278f99998" },
+        { name: "PCN-nospec", sha: "1b798ebf0c05bfb5e1884a841d92152b1d04b214" },
+      ],
+      LinuxDesktopIPCProfiling5ms: [
+        { name: "Base", sha: "0c13f1b96f5d17d16320271f000d565b966ec99a" },
+        { name: "PCN", sha: "bb31ce665c0277ddb83414a8108b4a63ffefd3ff" },
+      ],
+      LinuxDesktopNetworkProfiling: [
+        { name: "Base", sha: "0c13f1b96f5d17d16320271f000d565b966ec99a" },
+        { name: "PCN", sha: "f31c616a1cb17338d9d97aa33d40ba90002b7ea6" },
+      ],
+      MacDesktop: [
+        { name: "Base", sha: "8223846c2e40249baa227f5df61bc40a5cd4698f" },
+        { name: "PCN", sha: "8675c7b41d6b87e9fb272012595092a427e747ca" },
+        { name: "PCN-nospect", sha: "77537c73070f3db54a88dee9814d74936a34a11f" },
+      ],
+      MacDesktopIPCProfiling5ms: [
+        { name: "Base", sha: "9dbffc091647e9e93882f3617ef25448b8755f19" },
+        { name: "PCN", sha: "479d8d43326ff865c8b1e4e79ec54672404b1520" },
+      ],
+      MacDesktopNetworkProfiling: [
+        { name: "Base", sha: "9dbffc091647e9e93882f3617ef25448b8755f19" },
+        { name: "PCN", sha: "51e31d9d4b606cffdd2adf58cf24f895026e8e9f" },
+      ],
+      WindowsDesktop: [
+        { name: "Base", sha: "18e6a20751a70281445173fbb8db004e90529205" },
+        { name: "PCN", sha: "97b5e459d4668ba9d9b4efe4dd2bee8c170bf5fa" },
+        { name: "PCN-nospec", sha: "1c450b5a117992f2cd98827095798d054f96229f" },
+      ],
+      WindowsDesktopIPCProfiling5ms: [
+        { name: "Base", sha: "732c071d9e87c3228ec4f3019cf93e41ff17d47e" },
+        { name: "PCN", sha: "ca2830b528e68dc9ffe93114b6854ec2f7a1446d" },
+      ],
+      WindowsDesktopNetworkProfiling: [
+        { name: "Base", sha: "732c071d9e87c3228ec4f3019cf93e41ff17d47e" },
+        { name: "PCN", sha: "258e631c2bcdcaac952859c45e53620e27ee64ce" },
+      ],
+      AndroidFenix: [
+        { name: "Base", sha: "44094ba1db3eaa19ad58706eb0f0cf9ab793bba1" },
+        { name: "PCN", sha: "a4aaa3d389910182ea50383929eb0c52e1dc0efb" },
+        { name: "PCN-nospec", sha: "02a90bc989b060ee73298be52f26629c26e0b9fa" },
+      ],
+      AndroidFenixIPCProfiling5ms: [
+        { name: "Base", sha: "44094ba1db3eaa19ad58706eb0f0cf9ab793bba1" },
+        { name: "PCN", sha: "61f4620f3266f58d5c89818d5c8cd6e300208403" },
+      ],
+      AndroidFenixNetworkProfiling: [
+        { name: "Base", sha: "44094ba1db3eaa19ad58706eb0f0cf9ab793bba1" },
+        { name: "PCN", sha: "610d12c53be552d3c3eb38a5c3d5b4ecb457641f" },
       ],
     };
   const groups = Object.keys(runs);
@@ -74,8 +121,9 @@
 
       comp.appendChild(opt);
     }
-    comp.appendChild(document.createElement("hr"));
+
     item.appendChild(comp);
+    comp.appendChild(document.createElement("hr"));
 
     return item;
   }
