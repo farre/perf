@@ -28,150 +28,17 @@
     return { name, url };
   }
 
-  const runs = [
-    {
-      group: "Desktop",
-      name: "Base",
-      sha: "12d978ebebacc823350c3f524a2335453c16882a",
-    },
-    {
-      group: "Desktop",
-      name: "PCN",
-      sha: "bf5dc428432235b43a982436426918b4f5a4b979",
-    },
-    {
-      group: "Desktop",
-      name: "PCN+Speculative",
-      sha: "66a541e93772a1f8daae82855dde29ef2ee71d03",
-    },
-    {
-      group: "Profiling1ms",
-      name: "Base 1ms",
-      sha: "945cbf8408cf268a8f6df09e7a9f18189edfb790",
-    },
-    {
-      group: "Profiling1ms",
-      name: "PCN 1ms",
-      sha: "aba8fed9c4c887eba2acf5b73f37edc27da0965a",
-    },
-    {
-      group: "Profiling1ms",
-      name: "PCN+Speculative 1ms",
-      sha: "e244afefbb894a5b1666a94a02486605a1ebffd6",
-    },
-    {
-      group: "Profiling5ms",
-      name: "Base 5ms",
-      sha: "7122c19c28cc5bee7418acb0a2b003f696c4756e",
-    },
-    {
-      group: "Profiling5ms",
-      name: "PCN 5ms",
-      sha: "a80729149b2b821e1b2e873aa5f7c7e8b642367c",
-    },
-    {
-      group: "Profiling5ms",
-      name: "PCN+Speculative 5ms",
-      sha: "21914870db45f7438ab65a24060f660c85552113",
-    },
-    {
-      group: "Android",
-      name: "Base",
-      sha: "4f15f101d25445131da44d1979829aa4632eba35",
-    },
-    {
-      group: "Android",
-      name: "PCN",
-      sha: "275dfd85f8935a05cc167dd2f50c2eeb90b59bf2",
-    },
-    {
-      group: "Android",
-      name: "PCN+Speculative",
-      sha: "b3dc3867cd531293cd5d0606a1341e22516dcd60",
-    },
-    {
-      group: "AndroidProfile1ms",
-      name: "Base 1ms",
-      sha: "38f941ad5bc295df7952e7eda2cd4202c5701599",
-    },
-    {
-      group: "AndroidProfile1ms",
-      name: "PCN 1ms",
-      sha: "8737d4dcbb6859fe83a791ac8263366d8d18855b",
-    },
-    {
-      group: "AndroidProfile1ms",
-      name: "PCN+Speculative 1ms",
-      sha: "ae7d5a5acaf71fdc57e7e6d9fea454da614a014d",
-    },
-    {
-      group: "DesktopStacklessProfile",
-      name: "Base",
-      sha: "19e5afcbbbe3c3e5396272b097aa122525039d4c",
-    },
-    {
-      group: "DesktopStacklessProfile",
-      name: "PCN",
-      sha: "1fff797c375c2387b2aa3021a2b016b9ff21b54a",
-    },
-    {
-      group: "DesktopStacklessProfile",
-      name: "PCN+Speculative",
-      sha: "f14be5f6d7cc80e01d2e644c28e6da8695f64499",
-    },
-    {
-      group: "DesktopStacklessProfile",
-      name: "Nopred",
-      sha: "59e64ca337ac939769a2d07d6d213c3d4ddae94f",
-    },
-    {
-      group: "DesktopStacklessProfile",
-      name: "PCN+Speculative+Pred",
-      sha: "213156434cd670d2ac976f322a76dae96b1171ce",
-    },
-    {
-      group: "Browsertimex5",
-      name: "Base",
-      sha: "3776b401133b0b09ea45c1cf4789428845485dc4",
-    },
-    {
-      group: "Browsertimex5",
-      name: "PCN+Speculative",
-      sha: "2109afa4a60b96983b49a09c5f833ff589dd4a39",
-    },
-    {
-      group: "SocketThread",
-      name: "Base",
-      sha: "327cf9ae8c8526f8f30f5cbd764306a883c64c40",
-    },
-    {
-      group: "SocketThread",
-      name: "PCN+Speculative",
-      sha: "2a9129fd28a9ed7ce80e6b3607ef6c1e7e0924b8",
-    }
-  ];
-  const groups = [
-    "Desktop",
-    "Browsertimex5",
-    "Profiling1ms",
-    "Profiling5ms",
-    "Android",
-    "DesktopStacklessProfile",
-    "SocketThread"
-  ];
+  const runs = {
+      Desktop: [
+        { name: "Base", sha: "12d978ebebacc823350c3f524a2335453c16882a" },
+        { name: "PCN", sha: "bf5dc428432235b43a982436426918b4f5a4b979" },
+        { name: "PCN+Speculative", sha: "66a541e93772a1f8daae82855dde29ef2ee71d03" }
+      ],
+    };
+  const groups = Object.keys(runs);
 
   function getLists() {
-    const lists = {
-      Desktop: document.createElement("ul"),
-      Profiling1ms: document.createElement("ul"),
-      Profiling5ms: document.createElement("ul"),
-      Android: document.createElement("ul"),
-      AndroidProfile1ms: document.createElement("ul"),
-      DesktopStacklessProfile: document.createElement("ul"),
-      Browsertimex5: document.createElement("ul"),
-      SocketThread: document.createElement("ul"),
-    };
-    return lists;
+    return Object.fromEntries(groups.map(g => [g, document.createElement("ul")]));
   }
 
   function createItem(group, name, sha, compareWith) {
@@ -191,9 +58,8 @@
     compHelp.innerText = "Compare with...";
     comp.appendChild(compHelp);
 
-    let lastGroup;
-    for (let run of runs) {
-      const runName = `${run.group} ${run.name}`;
+    for (let run of runs[group]) {
+      const runName = `${group} ${run.name}`;
       if (runName == name) continue;
 
       let opt = document.createElement("option");
@@ -206,14 +72,9 @@
         comp.selectedIndex = 0;
       };
 
-      if (lastGroup && lastGroup !== run.group) {
-        comp.appendChild(document.createElement("hr"));
-      }
-      lastGroup = run.group;
-
       comp.appendChild(opt);
     }
-
+    comp.appendChild(document.createElement("hr"));
     item.appendChild(comp);
 
     return item;
@@ -221,10 +82,12 @@
 
   function initTreeherder() {
     const lists = getLists();
-    for (let run of runs) {
-      const list = lists[run.group];
-      const item = createItem(run.group, `${run.group} ${run.name}`, run.sha);
-      list.appendChild(item);
+    for (let [group, entries] of Object.entries(runs)) {
+      for (let run of entries) {
+        const list = lists[group];
+        const item = createItem(group, `${group} ${run.name}`, run.sha);
+        list.appendChild(item);
+      }
     }
     let treeherderRuns = document.getElementById("treeherder");
     for (let list of Object.values(lists)) {
@@ -244,4 +107,8 @@
 <p>
   When selecting a comparison, the profile in the dropdown will be the new with
   the list item as the base.
+</p>
+
+<p>
+  Previous rounds of profiling can be found <a href="old/">here</a>
 </p>
